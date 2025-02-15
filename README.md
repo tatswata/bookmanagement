@@ -1,2 +1,2 @@
-# bookmanagement
-bookmanagement system for coding test
+# book management
+book management system for coding test
