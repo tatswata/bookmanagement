@@ -15,13 +15,13 @@ class BookService(
 ) {
 
     fun getAllBooks(): List<BookResponse> {
-        var books = bookRepository.findAll()
+        val books = bookRepository.findAll()
         return books.map { BookResponse(it.id, it.title, it.price, it.status)}
 
     }
 
     fun getBookById(id: Int): BookResponse? {
-        var book = bookRepository.findById(id)
+        val book = bookRepository.findById(id)
         return book?.let {BookResponse(it.id, it.title, it.price, it.status)}
     }
 

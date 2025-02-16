@@ -1,7 +1,6 @@
 package com.tatswata.bookmanagement.controller
 
 import com.tatswata.bookmanagement.service.BookService
-import com.tatswata.bookmanagement.db.tables.records.BooksRecord
 import com.tatswata.bookmanagement.dto.BookResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -10,15 +9,12 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/books")
 class BookController(private val bookService: BookService) {
 
-    // 全書籍を取得する
     @GetMapping
     fun getAllBooks(): List<BookResponse> = bookService.getAllBooks()
 
-    // IDで書籍を取得する
     @GetMapping("/{id}")
     fun getBookById(@PathVariable id: Int): BookResponse? = bookService.getBookById(id)
 
-    // 書籍を作成する
     @PostMapping
     fun createBook(
         @RequestBody createBookRequest: CreateBookRequest

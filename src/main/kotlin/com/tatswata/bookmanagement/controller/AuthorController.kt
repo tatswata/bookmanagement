@@ -10,15 +10,12 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/authors")
 class AuthorController(private val authorService: AuthorService) {
 
-    // 全著者を取得する
     @GetMapping
     fun getAllAuthors(): List<AuthorResponse> = authorService.getAllAuthors()
 
-    // IDで著者を取得する
     @GetMapping("/{id}")
     fun getAuthorById(@PathVariable id: Int): AuthorResponse? = authorService.getAuthorById(id)
 
-    // 著者を作成する
     @PostMapping
     fun createAuthor(
         @RequestBody createAuthorRequest: CreateAuthorRequest
