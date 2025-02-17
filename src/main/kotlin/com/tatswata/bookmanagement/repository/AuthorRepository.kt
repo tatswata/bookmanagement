@@ -47,14 +47,4 @@ class AuthorRepository(private val dsl: DSLContext) {
             return author
         }
     }
-
-    fun update(author: Author): Author {
-        dsl.update(Authors.AUTHORS)
-            .set(Authors.AUTHORS.NAME, author.name.name)
-            .set(Authors.AUTHORS.BIRTH_DATE, author.birthDate.birthDate)
-            .where(Authors.AUTHORS.ID.eq(author.id!!.id))
-            .execute()
-
-        return author
-    }
 }
