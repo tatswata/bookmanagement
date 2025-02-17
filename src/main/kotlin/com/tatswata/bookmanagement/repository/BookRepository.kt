@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository
 @Repository
 class BookRepository(private val dsl: DSLContext) {
 
-    fun findByAuthorId(id: Int): BooksRecord? {
-        return dsl.selectFrom(Books.BOOKS).where(Books.BOOKS.ID.eq(id)).fetchOneInto(BooksRecord::class.java)
+    fun findBooksByIds(bookIds: List<Int>): List<BooksRecord> {
+        return dsl.selectFrom(Books.BOOKS)
+            .where(Books.BOOKS.ID.`in`(bookIds))
+            .fetchInto(BooksRecord::class.java)
     }
 
     fun save(title: String, price: Int, status: String): BooksRecord {

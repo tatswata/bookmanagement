@@ -3,6 +3,7 @@ package com.tatswata.bookmanagement.controller
 import com.tatswata.bookmanagement.service.AuthorService
 import com.tatswata.bookmanagement.db.tables.records.AuthorsRecord
 import com.tatswata.bookmanagement.dto.AuthorResponse
+import com.tatswata.bookmanagement.dto.BookResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -10,9 +11,10 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/authors")
 class AuthorController(private val authorService: AuthorService) {
 
-    // ToDo: Authorに紐付く書籍の一覧を取得するエンドポイントを追加する
-    // @GetMapping("/{id}/books")
-    // fun getBooksWrittenByAuthor(@PathVariable id: Int): List<BookResponse> = authorService.getBooksWrittenByAuthor(id)
+    @GetMapping("/{id}/books")
+    fun getBooksWrittenByAuthor(@PathVariable id: Int): List<BookResponse> {
+        return authorService.getBooksWrittenByAuthor(id)
+    }
 
     @PostMapping
     fun createAuthor(
