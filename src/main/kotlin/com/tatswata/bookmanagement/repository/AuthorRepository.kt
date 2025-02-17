@@ -25,17 +25,27 @@ class AuthorRepository(private val dsl: DSLContext) {
     }
 
     fun save(author: Author): Author {
-        val record = dsl.insertInto(Authors.AUTHORS)
-            .columns(Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)
-            .values(author.name.name, author.birthDate.birthDate)
-            .returning(Authors.AUTHORS.ID)
-            .fetchOne()!!
+        if (author.id == null) { // insert
+            val record = dsl.insertInto(Authors.AUTHORS)
+                .columns(Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)
+                .values(author.name.name, author.birthDate.birthDate)
+                .returning(Authors.AUTHORS.ID)
+                .fetchOne()!!
 
-        val authorId = AuthorId(record.id)
-        val authorName = AuthorName(record.name)
-        val authorBirthDate = AuthorBirthDate(record.birthDate)
+            val authorId = AuthorId(record.id)
+            val authorName = AuthorName(record.name)
+            val authorBirthDate = AuthorBirthDate(record.birthDate)
 
-        return Author(authorId, authorName, authorBirthDate)
+            return Author(authorId, authorName, authorBirthDate)
+        } else { // update
+            dsl.update(Authors.AUTHORS)
+                .set(Authors.AUTHORS.NAME, author.name.name)
+                .set(Authors.AUTHORS.BIRTH_DATE, author.birthDate.birthDate)
+                .where(Authors.AUTHORS.ID.eq(author.id!!.id))
+                .execute()
+
+            return author
+        }
     }
 
     fun update(author: Author): Author {

@@ -62,8 +62,7 @@ class AuthorService(
             author.updateBirthDate(newBirthDate)
         }
 
-        // ToDo: saveメソッドで保存できるようにする
-        val updatedAuthor = authorRepository.update(author)
+        val updatedAuthor = authorRepository.save(author)
 
         return AuthorResponse(
             updatedAuthor.id!!.id,
