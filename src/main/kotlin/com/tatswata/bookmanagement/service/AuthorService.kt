@@ -7,6 +7,7 @@ import com.tatswata.bookmanagement.dto.BookResponse
 import com.tatswata.bookmanagement.repository.BookRepository
 import com.tatswata.bookmanagement.repository.BooksAuthorsRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Service
@@ -17,10 +18,8 @@ class AuthorService(
 ) {
 
     fun getBooksWrittenByAuthor(authorId: Int): List<BookResponse> {
-        // 著者IDに紐づく書籍ID一覧を取得
         val bookIds = bookAuthorRepository.findBooksByAuthorId(authorId)
 
-        // 書籍情報を取得
         return bookRepository.findBooksByIds(bookIds).map { book ->
             BookResponse(
                 id = book.id,
@@ -31,8 +30,16 @@ class AuthorService(
         }
     }
 
-        fun createAuthor(name: String, birthDate: String): AuthorsRecord {
+    fun createAuthor(name: String, birthDate: String): AuthorsRecord {
         val birthDateLocal = LocalDate.parse(birthDate)
         return authorRepository.save(name, birthDateLocal)
+    }
+
+    @Transactional
+    fun updateAuthor(id: Int, name: String, birthDate: String): Boolean {
+        // ToDo: Entityを更新してsaveするだけにする
+
+        val birthDateLocal = LocalDate.parse(birthDate)
+        return authorRepository.update(id, name, birthDateLocal)
     }
 }

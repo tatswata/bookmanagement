@@ -20,4 +20,14 @@ class AuthorRepository(private val dsl: DSLContext) {
             .returning()
             .fetchOne()!!
     }
+
+    fun update(id: Int, name: String, birthDate: LocalDate): Boolean {
+        val updateCount = dsl.update(Authors.AUTHORS)
+            .set(Authors.AUTHORS.NAME, name)
+            .set(Authors.AUTHORS.BIRTH_DATE, birthDate)
+            .where(Authors.AUTHORS.ID.eq(id))
+            .execute()
+
+        return updateCount > 0
+    }
 }

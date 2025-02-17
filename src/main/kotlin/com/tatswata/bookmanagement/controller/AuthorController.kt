@@ -24,7 +24,19 @@ class AuthorController(private val authorService: AuthorService) {
         return ResponseEntity.ok().build()
     }
 
-    // ToDo: Authorを更新する
+    @PutMapping("/{id}")
+    fun updateAuthor(
+        @PathVariable id: Int,
+        @RequestBody request: UpdateAuthorRequest
+    ): ResponseEntity<Void> {
+        return if (authorService.updateAuthor(id, request.name, request.birthDate)) {
+            ResponseEntity.ok().build()
+        } else {
+            ResponseEntity.notFound().build()
+        }
+    }
 }
 
 data class CreateAuthorRequest(val name: String, val birthDate: String)
+// ToDo: Entityを更新して永続化するようにしたらそれぞれのリクエストパラメータは任意にする
+data class UpdateAuthorRequest(val name: String, val birthDate: String)
