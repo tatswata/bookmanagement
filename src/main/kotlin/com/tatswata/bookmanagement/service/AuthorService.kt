@@ -21,7 +21,7 @@ class AuthorService(
     private val bookRepository: BookRepository
 ) {
 
-    // ToDo: ドメインモデルを使うようにする
+    // ToDo: ドメインモデルを使うようにする。
     fun getBooksWrittenByAuthor(authorId: Int): List<BookResponse> {
         val bookIds = bookAuthorRepository.findBooksByAuthorId(authorId)
 

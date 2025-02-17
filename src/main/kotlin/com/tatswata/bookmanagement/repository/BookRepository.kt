@@ -9,12 +9,14 @@ import org.springframework.stereotype.Repository
 @Repository
 class BookRepository(private val dsl: DSLContext) {
 
+    // ToDo: ドメインモデルを使うようにする。
     fun findBooksByIds(bookIds: List<Int>): List<BooksRecord> {
         return dsl.selectFrom(Books.BOOKS)
             .where(Books.BOOKS.ID.`in`(bookIds))
             .fetchInto(BooksRecord::class.java)
     }
 
+    // ToDo: ドメインモデルを使うようにする。
     fun save(title: String, price: Int, status: String): BooksRecord {
         return dsl.insertInto(Books.BOOKS)
             .columns(Books.BOOKS.TITLE, Books.BOOKS.PRICE, Books.BOOKS.STATUS)
@@ -23,6 +25,7 @@ class BookRepository(private val dsl: DSLContext) {
             .fetchOne()!!
     }
 
+    // ToDo: ドメインモデルを使うようにする。
     fun update(id: Int, title: String, price: Int, status: String, authorIds: List<Int>): Boolean {
         val updateCount = dsl.update(Books.BOOKS)
             .set(Books.BOOKS.TITLE, title)

@@ -15,6 +15,7 @@ class BookService(
     private val bookAuthorRepository: BooksAuthorsRepository
 ) {
 
+    // ToDo: ドメインモデルを使うようにする
     @Transactional
     fun createBook(title: String, price: Int, status: String, authorIds: List<Int>): BooksRecord {
         val book = bookRepository.save(title, price, status)
@@ -26,6 +27,7 @@ class BookService(
         return book
     }
 
+    // ToDo: ドメインモデルを使うようにする
     @Transactional
     fun updateBook(id: Int, title: String, price: Int, status: String, authorIds: List<Int>): Boolean {
         return bookRepository.update(id, title, price, status, authorIds)

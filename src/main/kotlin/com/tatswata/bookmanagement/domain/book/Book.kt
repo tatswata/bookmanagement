@@ -4,14 +4,14 @@ import com.tatswata.bookmanagement.domain.author.AuthorId
 
 class Book(
     val id: BookId?,
-    title: String,
-    price: Int,
+    title: BookTitle,
+    price: BookPrice,
     authorIds: List<AuthorId>,
     status: BookStatus
 ) {
-    var title: BookTitle = BookTitle(title)
+    var title: BookTitle = title
         private set
-    var price: BookPrice = BookPrice(price)
+    var price: BookPrice = price
         private set
     var authorIds: List<AuthorId> = authorIds
         private set
