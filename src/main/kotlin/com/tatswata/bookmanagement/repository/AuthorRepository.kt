@@ -8,7 +8,6 @@ import com.tatswata.bookmanagement.domain.author.AuthorId
 import com.tatswata.bookmanagement.domain.author.AuthorName
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
-import java.time.LocalDate
 
 @Repository
 class AuthorRepository(private val dsl: DSLContext) {

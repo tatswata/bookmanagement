@@ -1,13 +1,11 @@
 package com.tatswata.bookmanagement.service
 
-import com.tatswata.bookmanagement.repository.AuthorRepository
-import com.tatswata.bookmanagement.db.tables.records.AuthorsRecord
 import com.tatswata.bookmanagement.domain.author.Author
 import com.tatswata.bookmanagement.domain.author.AuthorBirthDate
-import com.tatswata.bookmanagement.domain.author.AuthorId
 import com.tatswata.bookmanagement.domain.author.AuthorName
 import com.tatswata.bookmanagement.dto.AuthorResponse
 import com.tatswata.bookmanagement.dto.BookResponse
+import com.tatswata.bookmanagement.repository.AuthorRepository
 import com.tatswata.bookmanagement.repository.BookRepository
 import com.tatswata.bookmanagement.repository.BooksAuthorsRepository
 import org.springframework.stereotype.Service

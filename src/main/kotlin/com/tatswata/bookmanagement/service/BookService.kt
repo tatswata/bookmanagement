@@ -1,10 +1,9 @@
 package com.tatswata.bookmanagement.service
 
+import com.tatswata.bookmanagement.db.tables.records.BooksRecord
+import com.tatswata.bookmanagement.repository.AuthorRepository
 import com.tatswata.bookmanagement.repository.BookRepository
 import com.tatswata.bookmanagement.repository.BooksAuthorsRepository
-import com.tatswata.bookmanagement.repository.AuthorRepository
-import com.tatswata.bookmanagement.db.tables.records.BooksRecord
-import com.tatswata.bookmanagement.dto.BookResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
