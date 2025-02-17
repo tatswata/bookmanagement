@@ -6,31 +6,35 @@ import com.tatswata.bookmanagement.dto.AuthorResponse
 import com.tatswata.bookmanagement.dto.BookResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
 
 @RestController
 @RequestMapping("/authors")
 class AuthorController(private val authorService: AuthorService) {
 
     @GetMapping("/{id}/books")
-    fun getBooksWrittenByAuthor(@PathVariable id: Int): List<BookResponse> {
-        return authorService.getBooksWrittenByAuthor(id)
+    fun getBooksWrittenByAuthor(@PathVariable id: Int): ResponseEntity<List<BookResponse>> {
+        return ResponseEntity.ok(authorService.getBooksWrittenByAuthor(id))
     }
 
     @PostMapping
     fun createAuthor(
-        @RequestBody createAuthorRequest: CreateAuthorRequest
-    ): ResponseEntity<Void> {
-        authorService.createAuthor(createAuthorRequest.name, createAuthorRequest.birthDate)
-        return ResponseEntity.ok().build()
+        @RequestBody request: CreateAuthorRequest
+    ): ResponseEntity<AuthorResponse> {
+        val birthDateLocal = LocalDate.parse(request.birthDate) // ToDo: エラーハンドリング
+        val createdAuthorResponse = authorService.createAuthor(request.name, birthDateLocal)
+        return ResponseEntity.ok(createdAuthorResponse)
     }
 
     @PutMapping("/{id}")
     fun updateAuthor(
         @PathVariable id: Int,
         @RequestBody request: UpdateAuthorRequest
-    ): ResponseEntity<Void> {
-        return if (authorService.updateAuthor(id, request.name, request.birthDate)) {
-            ResponseEntity.ok().build()
+    ): ResponseEntity<AuthorResponse> {
+        val birthDateLocal = request.birthDate?.let { LocalDate.parse(it) } // ToDo: パースエラーのハンドリング
+        val updatedAuthorResponse = authorService.updateAuthor(id, request.name, birthDateLocal)
+        return if (updatedAuthorResponse != null) {
+            ResponseEntity.ok(updatedAuthorResponse)
         } else {
             ResponseEntity.notFound().build()
         }
@@ -38,5 +42,4 @@ class AuthorController(private val authorService: AuthorService) {
 }
 
 data class CreateAuthorRequest(val name: String, val birthDate: String)
-// ToDo: Entityを更新して永続化するようにしたらそれぞれのリクエストパラメータは任意にする
-data class UpdateAuthorRequest(val name: String, val birthDate: String)
+data class UpdateAuthorRequest(val name: String?, val birthDate: String?)
