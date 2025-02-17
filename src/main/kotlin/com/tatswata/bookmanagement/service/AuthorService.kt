@@ -35,6 +35,7 @@ class AuthorService(
         }
     }
 
+    @Transactional
     fun createAuthor(name: String, birthDate: LocalDate): AuthorResponse {
         val authorName = AuthorName(name)
         val authorBirthDate = AuthorBirthDate(birthDate)
