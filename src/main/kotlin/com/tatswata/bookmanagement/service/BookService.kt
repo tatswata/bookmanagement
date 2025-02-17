@@ -6,6 +6,7 @@ import com.tatswata.bookmanagement.repository.AuthorRepository
 import com.tatswata.bookmanagement.db.tables.records.BooksRecord
 import com.tatswata.bookmanagement.dto.BookResponse
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class BookService(
@@ -14,17 +15,7 @@ class BookService(
     private val bookAuthorRepository: BooksAuthorsRepository
 ) {
 
-    fun getAllBooks(): List<BookResponse> {
-        val books = bookRepository.findAll()
-        return books.map { BookResponse(it.id, it.title, it.price, it.status)}
-
-    }
-
-    fun getBookById(id: Int): BookResponse? {
-        val book = bookRepository.findById(id)
-        return book?.let {BookResponse(it.id, it.title, it.price, it.status)}
-    }
-
+    @Transactional
     fun createBook(title: String, price: Int, status: String, authorIds: List<Int>): BooksRecord {
         val book = bookRepository.save(title, price, status)
         authorIds.forEach { authorId ->
@@ -34,4 +25,10 @@ class BookService(
         }
         return book
     }
+
+    @Transactional
+    fun updateBook(id: Int, title: String, price: Int, status: String, authorIds: List<Int>): Boolean {
+        return bookRepository.update(id, title, price, status, authorIds)
+    }
+
 }
