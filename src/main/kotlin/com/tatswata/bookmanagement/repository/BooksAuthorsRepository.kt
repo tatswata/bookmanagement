@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class BooksAuthorsRepository(private val dsl: DSLContext) {
 
+    // ToDo: bookRepositoryに寄せる
     fun createBookAuthor(bookId: Int, authorId: Int): BooksAuthorsRecord {
         return dsl.insertInto(BooksAuthors.BOOKS_AUTHORS)
             .set(BooksAuthors.BOOKS_AUTHORS.BOOK_ID, bookId)
@@ -16,6 +17,7 @@ class BooksAuthorsRepository(private val dsl: DSLContext) {
             .fetchOne()!!
     }
 
+    // ToDo: bookRepositoryに寄せる
     fun findBooksByAuthorId(authorId: Int): List<Int> {
         return dsl.select(BooksAuthors.BOOKS_AUTHORS.BOOK_ID)
             .from(BooksAuthors.BOOKS_AUTHORS)
