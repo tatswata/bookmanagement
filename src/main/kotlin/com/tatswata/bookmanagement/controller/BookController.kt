@@ -9,12 +9,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/books")
 class BookController(private val bookService: BookService) {
 
-    @GetMapping
-    fun getAllBooks(): List<BookResponse> = bookService.getAllBooks()
-
-    @GetMapping("/{id}")
-    fun getBookById(@PathVariable id: Int): BookResponse? = bookService.getBookById(id)
-
     @PostMapping
     fun createBook(
         @RequestBody createBookRequest: CreateBookRequest
@@ -22,6 +16,8 @@ class BookController(private val bookService: BookService) {
         bookService.createBook(createBookRequest.title, createBookRequest.price, createBookRequest.status, createBookRequest.authorIds)
         return ResponseEntity.ok().build()
     }
+
+    // ToDo: 書籍を更新する
 }
 
 data class CreateBookRequest(

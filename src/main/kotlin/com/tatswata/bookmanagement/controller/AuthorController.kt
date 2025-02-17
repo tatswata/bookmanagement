@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/authors")
 class AuthorController(private val authorService: AuthorService) {
 
-    @GetMapping
-    fun getAllAuthors(): List<AuthorResponse> = authorService.getAllAuthors()
-
-    @GetMapping("/{id}")
-    fun getAuthorById(@PathVariable id: Int): AuthorResponse? = authorService.getAuthorById(id)
+    // ToDo: Authorに紐付く書籍の一覧を取得するエンドポイントを追加する
+    // @GetMapping("/{id}/books")
+    // fun getBooksWrittenByAuthor(@PathVariable id: Int): List<BookResponse> = authorService.getBooksWrittenByAuthor(id)
 
     @PostMapping
     fun createAuthor(
@@ -23,6 +21,8 @@ class AuthorController(private val authorService: AuthorService) {
         authorService.createAuthor(createAuthorRequest.name, createAuthorRequest.birthDate)
         return ResponseEntity.ok().build()
     }
+
+    // ToDo: Authorを更新する
 }
 
 data class CreateAuthorRequest(val name: String, val birthDate: String)

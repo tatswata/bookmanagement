@@ -8,11 +8,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class BookRepository(private val dsl: DSLContext) {
 
-    fun findAll(): List<BooksRecord> {
-        return dsl.selectFrom(Books.BOOKS).fetchInto(BooksRecord::class.java)
-    }
-
-    fun findById(id: Int): BooksRecord? {
+    fun findByAuthorId(id: Int): BooksRecord? {
         return dsl.selectFrom(Books.BOOKS).where(Books.BOOKS.ID.eq(id)).fetchOneInto(BooksRecord::class.java)
     }
 

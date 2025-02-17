@@ -14,17 +14,6 @@ class BookService(
     private val bookAuthorRepository: BooksAuthorsRepository
 ) {
 
-    fun getAllBooks(): List<BookResponse> {
-        val books = bookRepository.findAll()
-        return books.map { BookResponse(it.id, it.title, it.price, it.status)}
-
-    }
-
-    fun getBookById(id: Int): BookResponse? {
-        val book = bookRepository.findById(id)
-        return book?.let {BookResponse(it.id, it.title, it.price, it.status)}
-    }
-
     fun createBook(title: String, price: Int, status: String, authorIds: List<Int>): BooksRecord {
         val book = bookRepository.save(title, price, status)
         authorIds.forEach { authorId ->

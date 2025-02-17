@@ -16,26 +16,11 @@ class BooksAuthorsRepository(private val dsl: DSLContext) {
             .fetchOne()!!
     }
 
-    fun findAuthorsByBookId(bookId: Int): List<Int> {
-        return dsl.select(BooksAuthors.BOOKS_AUTHORS.AUTHOR_ID)
-            .from(BooksAuthors.BOOKS_AUTHORS)
-            .where(BooksAuthors.BOOKS_AUTHORS.BOOK_ID.eq(bookId))
-            .fetch()
-            .map { it[BooksAuthors.BOOKS_AUTHORS.AUTHOR_ID] }
-    }
-
     fun findBooksByAuthorId(authorId: Int): List<Int> {
         return dsl.select(BooksAuthors.BOOKS_AUTHORS.BOOK_ID)
             .from(BooksAuthors.BOOKS_AUTHORS)
             .where(BooksAuthors.BOOKS_AUTHORS.AUTHOR_ID.eq(authorId))
             .fetch()
             .map { it[BooksAuthors.BOOKS_AUTHORS.BOOK_ID] }
-    }
-
-    fun deleteBookAuthor(bookId: Int, authorId: Int) {
-        dsl.deleteFrom(BooksAuthors.BOOKS_AUTHORS)
-            .where(BooksAuthors.BOOKS_AUTHORS.BOOK_ID.eq(bookId))
-            .and(BooksAuthors.BOOKS_AUTHORS.AUTHOR_ID.eq(authorId))
-            .execute()
     }
 }
