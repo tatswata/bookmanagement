@@ -7,7 +7,6 @@ import com.tatswata.bookmanagement.dto.AuthorResponse
 import com.tatswata.bookmanagement.dto.BookResponse
 import com.tatswata.bookmanagement.repository.AuthorRepository
 import com.tatswata.bookmanagement.repository.BookRepository
-import com.tatswata.bookmanagement.repository.BooksAuthorsRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -15,20 +14,15 @@ import java.time.LocalDate
 @Service
 class AuthorService(
     private val authorRepository: AuthorRepository,
-    private val bookAuthorRepository: BooksAuthorsRepository,
     private val bookRepository: BookRepository
 ) {
-
-    // ToDo: ドメインモデルを使うようにする。
     fun getBooksWrittenByAuthor(authorId: Int): List<BookResponse> {
-        val bookIds = bookAuthorRepository.findBooksByAuthorId(authorId)
-
-        return bookRepository.findBooksByIds(bookIds).map { book ->
+        return bookRepository.findBooksByAuthorId(authorId).map { book ->
             BookResponse(
-                id = book.id,
-                title = book.title,
-                price = book.price,
-                status = book.status
+                id = book.id!!.id,
+                title = book.title.title,
+                price = book.price.price,
+                status = book.status.name
             )
         }
     }

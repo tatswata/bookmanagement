@@ -1,21 +1,12 @@
 package com.tatswata.bookmanagement.repository
 
 import com.tatswata.bookmanagement.db.tables.BooksAuthors
-import com.tatswata.bookmanagement.db.tables.records.BooksAuthorsRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
 
 @Repository
 class BooksAuthorsRepository(private val dsl: DSLContext) {
 
-    // ToDo: bookRepositoryに寄せる
-    fun createBookAuthor(bookId: Int, authorId: Int): BooksAuthorsRecord {
-        return dsl.insertInto(BooksAuthors.BOOKS_AUTHORS)
-            .set(BooksAuthors.BOOKS_AUTHORS.BOOK_ID, bookId)
-            .set(BooksAuthors.BOOKS_AUTHORS.AUTHOR_ID, authorId)
-            .returning()
-            .fetchOne()!!
-    }
 
     // ToDo: bookRepositoryに寄せる
     fun findBooksByAuthorId(authorId: Int): List<Int> {

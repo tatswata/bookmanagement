@@ -6,27 +6,31 @@ class Book(
     val id: BookId?,
     title: BookTitle,
     price: BookPrice,
+    status: BookStatus,
     authorIds: List<AuthorId>,
-    status: BookStatus
 ) {
     var title: BookTitle = title
         private set
     var price: BookPrice = price
         private set
-    var authorIds: List<AuthorId> = authorIds
-        private set
     var status: BookStatus = status
+        private set
+    var authorIds: List<AuthorId> = authorIds
         private set
 
     init {
         require(authorIds.isNotEmpty()) { "A book must have at least one author" }
     }
 
-    fun updatePrice(price: Int) {
-        this.price = BookPrice(price)
+    fun updateTitle(newTitle: BookTitle) {
+        this.title = newTitle
     }
 
-    fun updateAuthors(authorIds: List<AuthorId>) {
+    fun updatePrice(newPrice: BookPrice) {
+        this.price = newPrice
+    }
+
+    fun updateAuthors(newAuthorIds: List<AuthorId>) {
         require(authorIds.isNotEmpty()) { "A book must have at least one author" }
         this.authorIds = authorIds
     }
@@ -37,7 +41,7 @@ class Book(
 }
 
 @JvmInline
-value class BookId(val id: String)
+value class BookId(val id: Int)
 
 @JvmInline
 value class BookTitle(val title: String) {
