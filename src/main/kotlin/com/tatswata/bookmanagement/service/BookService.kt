@@ -6,17 +6,13 @@ import com.tatswata.bookmanagement.domain.book.BookPrice
 import com.tatswata.bookmanagement.domain.book.BookStatus
 import com.tatswata.bookmanagement.domain.book.BookTitle
 import com.tatswata.bookmanagement.dto.BookResponse
-import com.tatswata.bookmanagement.repository.AuthorRepository
 import com.tatswata.bookmanagement.repository.BookRepository
-import com.tatswata.bookmanagement.repository.BooksAuthorsRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class BookService(
-    private val bookRepository: BookRepository,
-    private val authorRepository: AuthorRepository,
-    private val bookAuthorRepository: BooksAuthorsRepository
+    private val bookRepository: BookRepository
 ) {
 
     @Transactional
