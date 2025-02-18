@@ -47,7 +47,7 @@ class BookRepository(private val dsl: DSLContext) {
             val record = dsl.insertInto(Books.BOOKS)
                 .columns(Books.BOOKS.TITLE, Books.BOOKS.PRICE, Books.BOOKS.STATUS)
                 .values(book.title.title, book.price.price, book.status.name)
-                .returning()
+                .returning(Books.BOOKS.ID, Books.BOOKS.TITLE, Books.BOOKS.PRICE, Books.BOOKS.STATUS)
                 .fetchOne()!!
 
             val bookId = BookId(record.id)

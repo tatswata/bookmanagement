@@ -28,7 +28,7 @@ class AuthorRepository(private val dsl: DSLContext) {
             val record = dsl.insertInto(Authors.AUTHORS)
                 .columns(Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)
                 .values(author.name.name, author.birthDate.birthDate)
-                .returning(Authors.AUTHORS.ID)
+                .returning(Authors.AUTHORS.ID, Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)
                 .fetchOne()!!
 
             val authorId = AuthorId(record.id)
