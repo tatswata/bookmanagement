@@ -2,32 +2,48 @@ package com.tatswata.bookmanagement.repository
 
 import com.tatswata.bookmanagement.db.tables.Authors
 import com.tatswata.bookmanagement.db.tables.records.AuthorsRecord
+import com.tatswata.bookmanagement.domain.author.Author
+import com.tatswata.bookmanagement.domain.author.AuthorBirthDate
+import com.tatswata.bookmanagement.domain.author.AuthorId
+import com.tatswata.bookmanagement.domain.author.AuthorName
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
-import java.time.LocalDate
 
 @Repository
 class AuthorRepository(private val dsl: DSLContext) {
 
-    fun findById(id: Int): AuthorsRecord? {
-        return dsl.selectFrom(Authors.AUTHORS).where(Authors.AUTHORS.ID.eq(id)).fetchOneInto(AuthorsRecord::class.java)
+    fun findById(id: Int): Author? {
+        val record = dsl.selectFrom(Authors.AUTHORS).where(Authors.AUTHORS.ID.eq(id)).fetchOneInto(AuthorsRecord::class.java)
+            ?: return null
+
+        val authorId = AuthorId(record.id)
+        val authorName = AuthorName(record.name)
+        val authorBirthDate = AuthorBirthDate(record.birthDate)
+
+        return Author(authorId, authorName, authorBirthDate)
     }
 
-    fun save(name: String, birthDate: LocalDate): AuthorsRecord {
-        return dsl.insertInto(Authors.AUTHORS)
-            .columns(Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)
-            .values(name, birthDate)
-            .returning()
-            .fetchOne()!!
-    }
+    fun save(author: Author): Author {
+        if (author.id == null) { // insert
+            val record = dsl.insertInto(Authors.AUTHORS)
+                .columns(Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)
+                .values(author.name.name, author.birthDate.birthDate)
+                .returning(Authors.AUTHORS.ID, Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)
+                .fetchOne()!!
 
-    fun update(id: Int, name: String, birthDate: LocalDate): Boolean {
-        val updateCount = dsl.update(Authors.AUTHORS)
-            .set(Authors.AUTHORS.NAME, name)
-            .set(Authors.AUTHORS.BIRTH_DATE, birthDate)
-            .where(Authors.AUTHORS.ID.eq(id))
-            .execute()
+            val authorId = AuthorId(record.id)
+            val authorName = AuthorName(record.name)
+            val authorBirthDate = AuthorBirthDate(record.birthDate)
 
-        return updateCount > 0
+            return Author(authorId, authorName, authorBirthDate)
+        } else { // update
+            dsl.update(Authors.AUTHORS)
+                .set(Authors.AUTHORS.NAME, author.name.name)
+                .set(Authors.AUTHORS.BIRTH_DATE, author.birthDate.birthDate)
+                .where(Authors.AUTHORS.ID.eq(author.id.id))
+                .execute()
+
+            return author
+        }
     }
 }
