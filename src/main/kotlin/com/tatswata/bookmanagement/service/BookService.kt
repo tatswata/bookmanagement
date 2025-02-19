@@ -17,6 +17,8 @@ class BookService(
 
     @Transactional
     fun createBook(title: String, price: Int, status: String, authorIds: List<Int>): BookResponse {
+        // ToDo: AuthorIdの存在チェック
+
         val bookTitle = BookTitle(title)
         val bookPrice = BookPrice(price)
         val bookStatus = BookStatus.valueOf(status)
@@ -36,7 +38,9 @@ class BookService(
     @Transactional
     fun updateBook(id: Int, title: String?, price: Int?, status: String?, authorIds: List<Int>?): BookResponse? {
         val book = bookRepository.findById(id)
-            ?: return null
+            ?: return null // ToDo: 例外分けて何が見つからなかったのか返せるようにした方が良さそう
+
+        // ToDo: AuthorIdの存在チェック
 
         if (title != null) {
             val newTitle = BookTitle(title)
