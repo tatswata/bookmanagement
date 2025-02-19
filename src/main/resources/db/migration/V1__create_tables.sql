@@ -6,7 +6,7 @@ CREATE TABLE authors (
 
 CREATE TABLE books (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
+    title VARCHAR(512) NOT NULL,
     price INT NOT NULL,
     status VARCHAR(50) NOT NULL
 );

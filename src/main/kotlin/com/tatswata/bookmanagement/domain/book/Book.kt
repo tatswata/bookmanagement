@@ -47,7 +47,9 @@ value class BookId(val id: Int)
 value class BookTitle(val title: String) {
     init {
         require(title.isNotBlank()) { "Title cannot be empty" }
-        require(title.length <= 255) { "Title cannot exceed 255 characters" }
+        // 書籍タイトルの現実的な上限値として設定
+        // 世界一長い小説のタイトル 375文字を根拠として余裕を持って設定した
+        require(title.length <= 500) { "Title cannot exceed 500 characters" }
     }
 }
 
@@ -55,6 +57,8 @@ value class BookTitle(val title: String) {
 value class BookPrice(val price: Int) {
     init {
         require(price >= 0) { "Price cannot be negative" }
+        // 書籍価格の現実的な上限値として設定
+        // Amazonの書籍価格の最大値 3万円程度を根拠として大幅に余裕を持って設定した
         require(price <= 1_000_000) { "Price cannot exceed 1,000,000" }
     }
 }
