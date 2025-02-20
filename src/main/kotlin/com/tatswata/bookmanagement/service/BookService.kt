@@ -6,18 +6,24 @@ import com.tatswata.bookmanagement.domain.book.BookPrice
 import com.tatswata.bookmanagement.domain.book.BookStatus
 import com.tatswata.bookmanagement.domain.book.BookTitle
 import com.tatswata.bookmanagement.dto.BookResponse
+import com.tatswata.bookmanagement.repository.AuthorRepository
 import com.tatswata.bookmanagement.repository.BookRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class BookService(
+    private val authorRepository: AuthorRepository,
     private val bookRepository: BookRepository
 ) {
 
     @Transactional
     fun createBook(title: String, price: Int, status: String, authorIds: List<Int>): BookResponse {
-        // ToDo: AuthorIdの存在チェック
+        authorIds.forEach { authorId ->
+            if (authorRepository.findById(authorId) == null) {
+                throw IllegalArgumentException("Author with id $authorId not found")
+            }
+        }
 
         val bookTitle = BookTitle(title)
         val bookPrice = BookPrice(price)
@@ -38,9 +44,13 @@ class BookService(
     @Transactional
     fun updateBook(id: Int, title: String?, price: Int?, status: String?, authorIds: List<Int>?): BookResponse? {
         val book = bookRepository.findById(id)
-            ?: return null // ToDo: 例外分けて何が見つからなかったのか返せるようにした方が良さそう
+            ?: throw IllegalArgumentException("Book with id $id not found")
 
-        // ToDo: AuthorIdの存在チェック
+        authorIds?.forEach { authorId ->
+            if (authorRepository.findById(authorId) == null) {
+                throw IllegalArgumentException("Author with id $authorId not found")
+            }
+        }
 
         if (title != null) {
             val newTitle = BookTitle(title)

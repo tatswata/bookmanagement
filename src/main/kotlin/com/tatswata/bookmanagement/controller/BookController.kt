@@ -28,11 +28,7 @@ class BookController(private val bookService: BookService) {
         @RequestBody request: UpdateBookRequest
     ): ResponseEntity<BookResponse> {
         val updateBookResponse = bookService.updateBook(id, request.title, request.price, request.status, request.authorIds)
-        return if (updateBookResponse != null) {
-            ResponseEntity.ok(updateBookResponse)
-        } else {
-            ResponseEntity.notFound().build()
-        }
+        return updateBookResponse?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
     }
 }
 
