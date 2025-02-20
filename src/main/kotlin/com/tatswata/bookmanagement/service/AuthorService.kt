@@ -18,12 +18,7 @@ class AuthorService(
 ) {
     fun getBooksWrittenByAuthor(authorId: Int): List<BookResponse> {
         return bookRepository.findBooksByAuthorId(authorId).map { book ->
-            BookResponse(
-                id = book.id!!.id,
-                title = book.title.title,
-                price = book.price.price,
-                status = book.status.name
-            )
+            BookResponse(book)
         }
     }
 
@@ -34,12 +29,7 @@ class AuthorService(
         val author = Author(null, authorName, authorBirthDate)
 
         val createdAuthor = authorRepository.save(author)
-
-        return AuthorResponse(
-            createdAuthor.id!!.id,
-            createdAuthor.name.name,
-            createdAuthor.birthDate.birthDate.toString()
-        )
+        return AuthorResponse(createdAuthor)
     }
 
     @Transactional
@@ -57,11 +47,6 @@ class AuthorService(
         }
 
         val updatedAuthor = authorRepository.save(author)
-
-        return AuthorResponse(
-            updatedAuthor.id!!.id,
-            updatedAuthor.name.name,
-            updatedAuthor.birthDate.birthDate.toString()
-        )
+        return AuthorResponse(updatedAuthor)
     }
 }

@@ -33,12 +33,7 @@ class BookService(
         val book = Book(null, bookTitle, bookPrice, bookStatus, bookAuthorIds)
 
         val createdBook = bookRepository.save(book)
-        return BookResponse(
-            createdBook.id!!.id,
-            createdBook.title.title,
-            createdBook.price.price,
-            createdBook.status.name
-        )
+        return BookResponse(createdBook)
     }
 
     @Transactional
@@ -69,12 +64,6 @@ class BookService(
         }
 
         val updatedBook = bookRepository.save(book)
-
-        return BookResponse(
-            updatedBook.id!!.id,
-            updatedBook.title.title,
-            updatedBook.price.price,
-            updatedBook.status.name
-        )
+        return BookResponse(updatedBook)
     }
 }
