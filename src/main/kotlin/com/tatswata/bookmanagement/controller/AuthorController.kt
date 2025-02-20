@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.time.format.DateTimeParseException
 import java.time.LocalDate
 
 @RestController
@@ -26,7 +27,12 @@ class AuthorController(private val authorService: AuthorService) {
     fun createAuthor(
         @RequestBody request: CreateAuthorRequest
     ): ResponseEntity<AuthorResponse> {
-        val birthDateLocal = LocalDate.parse(request.birthDate) // ToDo: エラーハンドリング
+        val birthDateLocal = try {
+            LocalDate.parse(request.birthDate)
+        } catch (ex: DateTimeParseException) {
+            throw IllegalArgumentException("Invalid format for birthDate")
+        }
+
         val createdAuthorResponse = authorService.createAuthor(request.name, birthDateLocal)
         return ResponseEntity.ok(createdAuthorResponse)
     }
@@ -36,7 +42,12 @@ class AuthorController(private val authorService: AuthorService) {
         @PathVariable id: Int,
         @RequestBody request: UpdateAuthorRequest
     ): ResponseEntity<AuthorResponse> {
-        val birthDateLocal = request.birthDate?.let { LocalDate.parse(it) } // ToDo: パースエラーのハンドリング
+        val birthDateLocal = try {
+            request.birthDate?.let { LocalDate.parse(it) }
+        } catch (ex: DateTimeParseException) {
+            throw IllegalArgumentException("Invalid format for birthDate")
+        }
+
         val updatedAuthorResponse = authorService.updateAuthor(id, request.name, birthDateLocal)
         return if (updatedAuthorResponse != null) {
             ResponseEntity.ok(updatedAuthorResponse)
