@@ -28,7 +28,9 @@ value class AuthorId(val id: Int)
 value class AuthorName(val name: String) {
     init {
         require(name.isNotBlank()) { "Name cannot be empty" }
-        require(name.length <= 512) { "Name cannot exceed 512 characters" }
+        // 著者名の現実的な上限値として設定
+        // 強い根拠はないので必要なら修正してください
+        require(name.length <= 500) { "Name cannot exceed 500 characters" }
     }
 }
 
