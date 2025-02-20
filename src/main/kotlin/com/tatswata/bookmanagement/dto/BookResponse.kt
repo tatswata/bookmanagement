@@ -9,9 +9,9 @@ data class BookResponse(
     val status: String
 ) {
     constructor(book: Book) : this(
-        id = book.id!!.id,
-        title = book.title.title,
-        price = book.price.price,
+        id = book.id!!.value,
+        title = book.title.value,
+        price = book.price.value,
         status = book.status.name
     )
 }

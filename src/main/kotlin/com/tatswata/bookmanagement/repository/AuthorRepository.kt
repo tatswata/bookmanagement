@@ -27,7 +27,7 @@ class AuthorRepository(private val dsl: DSLContext) {
         if (author.id == null) { // insert
             val record = dsl.insertInto(Authors.AUTHORS)
                 .columns(Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)
-                .values(author.name.name, author.birthDate.birthDate)
+                .values(author.name.value, author.birthDate.value)
                 .returning(Authors.AUTHORS.ID, Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)
                 .fetchOne()!!
 
@@ -38,9 +38,9 @@ class AuthorRepository(private val dsl: DSLContext) {
             return Author(authorId, authorName, authorBirthDate)
         } else { // update
             dsl.update(Authors.AUTHORS)
-                .set(Authors.AUTHORS.NAME, author.name.name)
-                .set(Authors.AUTHORS.BIRTH_DATE, author.birthDate.birthDate)
-                .where(Authors.AUTHORS.ID.eq(author.id.id))
+                .set(Authors.AUTHORS.NAME, author.name.value)
+                .set(Authors.AUTHORS.BIRTH_DATE, author.birthDate.value)
+                .where(Authors.AUTHORS.ID.eq(author.id.value))
                 .execute()
 
             return author

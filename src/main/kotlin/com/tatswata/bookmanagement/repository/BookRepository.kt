@@ -25,7 +25,7 @@ class BookRepository(private val dsl: DSLContext) {
         val bookStatus = BookStatus.valueOf(bookRecord.status)
         val authorIds = dsl.select(BOOKS_AUTHORS.AUTHOR_ID)
             .from(BOOKS_AUTHORS)
-            .where(BOOKS_AUTHORS.BOOK_ID.eq(bookId.id))
+            .where(BOOKS_AUTHORS.BOOK_ID.eq(bookId.value))
             .fetch()
             .map { AuthorId(it[BOOKS_AUTHORS.AUTHOR_ID]) }
 
@@ -46,7 +46,7 @@ class BookRepository(private val dsl: DSLContext) {
         if (book.id == null) { // insert
             val record = dsl.insertInto(Books.BOOKS)
                 .columns(Books.BOOKS.TITLE, Books.BOOKS.PRICE, Books.BOOKS.STATUS)
-                .values(book.title.title, book.price.price, book.status.name)
+                .values(book.title.value, book.price.value, book.status.name)
                 .returning(Books.BOOKS.ID, Books.BOOKS.TITLE, Books.BOOKS.PRICE, Books.BOOKS.STATUS)
                 .fetchOne()!!
 
@@ -57,32 +57,32 @@ class BookRepository(private val dsl: DSLContext) {
 
             book.authorIds.forEach { authorId ->
                 dsl.insertInto(BOOKS_AUTHORS)
-                    .set(BOOKS_AUTHORS.BOOK_ID, bookId.id)
-                    .set(BOOKS_AUTHORS.AUTHOR_ID, authorId.id)
+                    .set(BOOKS_AUTHORS.BOOK_ID, bookId.value)
+                    .set(BOOKS_AUTHORS.AUTHOR_ID, authorId.value)
                     .execute()
             }
             val authorIds = dsl.select(BOOKS_AUTHORS.AUTHOR_ID)
                 .from(BOOKS_AUTHORS)
-                .where(BOOKS_AUTHORS.BOOK_ID.eq(bookId.id))
+                .where(BOOKS_AUTHORS.BOOK_ID.eq(bookId.value))
                 .fetch()
                 .map { AuthorId(it[BOOKS_AUTHORS.AUTHOR_ID]) }
 
             return Book(bookId, bookTitle, bookPrice, bookStatus, authorIds)
         } else { // update
             dsl.update(Books.BOOKS)
-                .set(Books.BOOKS.TITLE, book.title.title)
-                .set(Books.BOOKS.PRICE, book.price.price)
+                .set(Books.BOOKS.TITLE, book.title.value)
+                .set(Books.BOOKS.PRICE, book.price.value)
                 .set(Books.BOOKS.STATUS, book.status.name)
-                .where(Books.BOOKS.ID.eq(book.id.id))
+                .where(Books.BOOKS.ID.eq(book.id.value))
                 .execute()
 
             dsl.deleteFrom(BOOKS_AUTHORS)
-                .where(BOOKS_AUTHORS.BOOK_ID.eq(book.id.id))
+                .where(BOOKS_AUTHORS.BOOK_ID.eq(book.id.value))
                 .execute()
             book.authorIds.forEach { authorId ->
                 dsl.insertInto(BOOKS_AUTHORS)
-                    .set(BOOKS_AUTHORS.BOOK_ID, book.id.id)
-                    .set(BOOKS_AUTHORS.AUTHOR_ID, authorId.id)
+                    .set(BOOKS_AUTHORS.BOOK_ID, book.id.value)
+                    .set(BOOKS_AUTHORS.AUTHOR_ID, authorId.value)
                     .execute()
             }
 
