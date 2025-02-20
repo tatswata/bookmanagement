@@ -8,8 +8,8 @@ data class AuthorResponse(
     val birthDate: String
 ) {
     constructor(author: Author) : this(
-        id = author.id!!.id,
-        name = author.name.name,
-        birthDate = author.birthDate.birthDate.toString()
+        id = author.id!!.value,
+        name = author.name.value,
+        birthDate = author.birthDate.value.toString()
     )
 }

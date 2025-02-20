@@ -22,21 +22,21 @@ class Author(
 }
 
 @JvmInline
-value class AuthorId(val id: Int)
+value class AuthorId(val value: Int)
 
 @JvmInline
-value class AuthorName(val name: String) {
+value class AuthorName(val value: String) {
     init {
-        require(name.isNotBlank()) { "Name cannot be empty" }
+        require(value.isNotBlank()) { "Name cannot be empty" }
         // 著者名の現実的な上限値として設定
         // 強い根拠はないので必要なら修正してください
-        require(name.length <= 500) { "Name cannot exceed 500 characters" }
+        require(value.length <= 500) { "Name cannot exceed 500 characters" }
     }
 }
 
 @JvmInline
-value class AuthorBirthDate(val birthDate: LocalDate) {
+value class AuthorBirthDate(val value: LocalDate) {
     init {
-        require(birthDate.isBefore(LocalDate.now())) { "birthDate cannot be in the future" }
+        require(value.isBefore(LocalDate.now())) { "birthDate cannot be in the future" }
     }
 }
