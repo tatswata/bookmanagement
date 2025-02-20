@@ -49,11 +49,7 @@ class AuthorController(private val authorService: AuthorService) {
         }
 
         val updatedAuthorResponse = authorService.updateAuthor(id, request.name, birthDateLocal)
-        return if (updatedAuthorResponse != null) {
-            ResponseEntity.ok(updatedAuthorResponse)
-        } else {
-            ResponseEntity.notFound().build()
-        }
+        return updatedAuthorResponse?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
     }
 }
 
