@@ -1,6 +1,6 @@
 package com.tatswata.bookmanagement.exception
 
 data class ErrorResponse(
-    val errorCode: String,
+    val status: String,
     val errorMessage: String
 )

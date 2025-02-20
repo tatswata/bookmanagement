@@ -11,7 +11,7 @@ class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<ErrorResponse> {
         val errorResponse = ErrorResponse(
-            errorCode = "400",
+            status = "400",
             errorMessage = ex.message ?: "Invalid argument"
         )
         return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
