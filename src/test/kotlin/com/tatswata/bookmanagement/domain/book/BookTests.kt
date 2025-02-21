@@ -28,6 +28,15 @@ class BookTests {
     }
 
     @Test
+    fun タイトルが最大長ちょうどの本を作成できる() {
+        val longTitle = "a".repeat(500)
+
+        val book = Book(BookId(1), BookTitle(longTitle), BookPrice(4500), BookStatus.UNPUBLISHED, listOf(AuthorId(1)))
+
+        assertEquals(500, book.title.value.length)
+    }
+
+    @Test
     fun タイトルが最大長を超える本は作成できない() {
         val longTitle = "a".repeat(501)
 
@@ -39,12 +48,26 @@ class BookTests {
     }
 
     @Test
+    fun 価格が0の本を作成できる() {
+        val book = Book(BookId(1), BookTitle("Effective Java"), BookPrice(0), BookStatus.UNPUBLISHED, listOf(AuthorId(1)))
+
+        assertEquals(0, book.price.value)
+    }
+
+    @Test
     fun 負の価格では本を作成できない() {
         val exception = assertThrows<IllegalArgumentException> {
             Book(BookId(1), BookTitle("Effective Java"), BookPrice(-1), BookStatus.UNPUBLISHED, listOf(AuthorId(1)))
         }
 
         assertEquals("Price cannot be negative", exception.message)
+    }
+
+    @Test
+    fun 価格が最大値ちょうどの本を作成できる() {
+        val book = Book(BookId(1), BookTitle("Effective Java"), BookPrice(1_000_000), BookStatus.UNPUBLISHED, listOf(AuthorId(1)))
+
+        assertEquals(1_000_000, book.price.value)
     }
 
     @Test
@@ -87,10 +110,11 @@ class BookTests {
     fun 本の著者を更新できる() {
         val book = Book(BookId(1), BookTitle("Effective Java"), BookPrice(4500), BookStatus.UNPUBLISHED, listOf(AuthorId(1)))
 
-        book.updateAuthors(listOf(AuthorId(2)))
+        book.updateAuthors(listOf(AuthorId(2), AuthorId(3)))
 
-        assertEquals(1, book.authorIds.size)
+        assertEquals(2, book.authorIds.size)
         assertEquals(2, book.authorIds[0].value)
+        assertEquals(3, book.authorIds[1].value)
     }
 
     @Test

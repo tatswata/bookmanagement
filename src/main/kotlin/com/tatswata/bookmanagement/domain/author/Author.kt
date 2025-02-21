@@ -37,6 +37,6 @@ value class AuthorName(val value: String) {
 @JvmInline
 value class AuthorBirthDate(val value: LocalDate) {
     init {
-        require(value.isBefore(LocalDate.now())) { "birthDate cannot be in the future" }
+        require(!value.isAfter(LocalDate.now())) { "birthDate cannot be in the future" }
     }
 }

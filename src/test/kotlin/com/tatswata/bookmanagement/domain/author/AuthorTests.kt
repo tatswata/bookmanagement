@@ -27,6 +27,15 @@ class AuthorTests {
     }
 
     @Test
+    fun 名前が最大長ちょうどの著者を作成できる() {
+        val longName = "a".repeat(500)
+
+        val author = Author(AuthorId(1), AuthorName(longName), AuthorBirthDate(LocalDate.of(1990, 1, 1)))
+
+        assertEquals(500, author.name.value.length)
+    }
+
+    @Test
     fun 名前が最大長を超える著者は作成できない() {
         val longName = "a".repeat(501)
 
@@ -35,6 +44,15 @@ class AuthorTests {
         }
 
         assertEquals("Name cannot exceed 500 characters", exception.message)
+    }
+
+    @Test
+    fun 当日の生年月日で著者を作成できる() {
+        val today = LocalDate.now()
+
+        val author = Author(AuthorId(1), AuthorName("John Doe"), AuthorBirthDate(today))
+
+        assertEquals(today, author.birthDate.value)
     }
 
     @Test
@@ -52,9 +70,9 @@ class AuthorTests {
     fun 著者の名前を変更できる() {
         val author = Author(AuthorId(1), AuthorName("John Doe"), AuthorBirthDate(LocalDate.of(1990, 1, 1)))
 
-        author.rename(AuthorName("Jane Doe"))
+        author.rename(AuthorName("Jane Doe Jr."))
 
-        assertEquals("Jane Doe", author.name.value)
+        assertEquals("Jane Doe Jr.", author.name.value)
     }
 
     @Test
