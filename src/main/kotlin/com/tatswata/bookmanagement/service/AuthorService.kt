@@ -35,7 +35,7 @@ class AuthorService(
     @Transactional
     fun updateAuthor(id: Int, name: String?, birthDate: LocalDate?): AuthorResponse? {
         val author = authorRepository.findById(id)
-            ?: return null
+            ?: throw IllegalArgumentException("Author with id $id not found")
 
         if (name != null) {
             val newName = AuthorName(name)
