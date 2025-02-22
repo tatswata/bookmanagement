@@ -4,9 +4,15 @@ import com.tatswata.bookmanagement.db.tables.Authors
 import com.tatswata.bookmanagement.db.tables.Books
 import com.tatswata.bookmanagement.db.tables.BooksAuthors.BOOKS_AUTHORS
 import com.tatswata.bookmanagement.domain.author.AuthorId
-import com.tatswata.bookmanagement.domain.book.*
+import com.tatswata.bookmanagement.domain.book.Book
+import com.tatswata.bookmanagement.domain.book.BookId
+import com.tatswata.bookmanagement.domain.book.BookPrice
+import com.tatswata.bookmanagement.domain.book.BookStatus
+import com.tatswata.bookmanagement.domain.book.BookTitle
 import org.jooq.DSLContext
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
