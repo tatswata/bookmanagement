@@ -73,6 +73,22 @@ class AuthorControllerTests {
     }
 
     @Test
+    fun 著者更新_正常系_任意パラメータ無し() {
+        // Given
+        val updateAuthorRequest = UpdateAuthorRequest(null, null)
+        val updatedAuthor = Author(AuthorId(1), AuthorName("John Doe Jr"), AuthorBirthDate(LocalDate.parse("2000-01-01")))
+        val authorResponse = AuthorResponse(updatedAuthor)
+        `when`(authorService.updateAuthor(1, null, null)).thenReturn(authorResponse)
+
+        // When
+        val response = authorController.updateAuthor(1, updateAuthorRequest)
+
+        // Then
+        assertEquals(HttpStatus.OK, response.statusCode)
+        assertEquals(authorResponse, response.body)
+    }
+
+    @Test
     fun 著者更新_更新対象が存在しない場合NOT_FOUNDを返す() {
         // Given
         val updateAuthorRequest = UpdateAuthorRequest("John Doe Jr", "2000-01-01")
