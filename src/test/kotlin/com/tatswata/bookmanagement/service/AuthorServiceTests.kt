@@ -74,6 +74,28 @@ class AuthorServiceTests {
     }
 
     @Test
+    fun 著者更新_変更後の値を渡さなかった属性はそのままになる() {
+        // Given
+        val author = Author(AuthorId(1), AuthorName("John Doe"), AuthorBirthDate(LocalDate.parse("2000-01-01")))
+        `when`(authorRepository.findById(1)).thenReturn(author)
+        `when`(authorRepository.save(any<Author>())).thenReturn(author)
+
+        // When
+        val response = authorService.updateAuthor(1, null, null)
+
+        // Then
+        verify(authorRepository, times(1)).save(any<Author>())
+        assertEquals("John Doe", response!!.name)
+        assertEquals("2000-01-01", response.birthDate)
+
+        val authorCaptor = argumentCaptor<Author>()
+        verify(authorRepository, times(1)).save(authorCaptor.capture())
+        assertEquals(1, authorCaptor.firstValue.id!!.value)
+        assertEquals(AuthorName("John Doe"), authorCaptor.firstValue.name)
+        assertEquals(AuthorBirthDate(LocalDate.parse("2000-01-01")), authorCaptor.firstValue.birthDate)
+    }
+
+    @Test
     fun 著者更新_存在しないidを指定した場合はIllegalArgumentExceptionを投げる() {
         // Given
         `when`(authorRepository.findById(1)).thenReturn(null)
