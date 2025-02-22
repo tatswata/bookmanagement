@@ -1,9 +1,14 @@
 package com.tatswata.bookmanagement.repository
 
 import com.tatswata.bookmanagement.db.tables.Authors
-import com.tatswata.bookmanagement.domain.author.*
+import com.tatswata.bookmanagement.domain.author.Author
+import com.tatswata.bookmanagement.domain.author.AuthorBirthDate
+import com.tatswata.bookmanagement.domain.author.AuthorId
+import com.tatswata.bookmanagement.domain.author.AuthorName
 import org.jooq.DSLContext
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

@@ -19,6 +19,7 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
 
@@ -42,6 +43,12 @@ class AuthorServiceTests {
         verify(authorRepository, times(1)).save(any<Author>())
         assertEquals("John Doe", response.name)
         assertEquals("2000-01-01", response.birthDate)
+
+        val authorCaptor = argumentCaptor<Author>()
+        verify(authorRepository, times(1)).save(authorCaptor.capture())
+        assertEquals(null, authorCaptor.firstValue.id)
+        assertEquals(AuthorName("John Doe"), authorCaptor.firstValue.name)
+        assertEquals(AuthorBirthDate(LocalDate.parse("2000-01-01")), authorCaptor.firstValue.birthDate)
     }
 
     @Test
@@ -58,6 +65,12 @@ class AuthorServiceTests {
         verify(authorRepository, times(1)).save(any<Author>())
         assertEquals("Jane Doe", response!!.name)
         assertEquals("1990-01-01", response.birthDate)
+
+        val authorCaptor = argumentCaptor<Author>()
+        verify(authorRepository, times(1)).save(authorCaptor.capture())
+        assertEquals(1, authorCaptor.firstValue.id!!.value)
+        assertEquals(AuthorName("Jane Doe"), authorCaptor.firstValue.name)
+        assertEquals(AuthorBirthDate(LocalDate.parse("1990-01-01")), authorCaptor.firstValue.birthDate)
     }
 
     @Test
