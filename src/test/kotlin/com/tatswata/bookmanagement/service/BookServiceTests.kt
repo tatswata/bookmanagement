@@ -24,7 +24,7 @@ import java.time.LocalDate
 
 
 @SpringBootTest
-class BookServiceTest {
+class BookServiceTests {
 
     private val authorRepository: AuthorRepository = mock(AuthorRepository::class.java)
     private val bookRepository: BookRepository = mock(BookRepository::class.java)
