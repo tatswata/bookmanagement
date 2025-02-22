@@ -19,6 +19,7 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
 
@@ -40,10 +41,17 @@ class BookServiceTests {
         val response = bookService.createBook("Effective Java", 100, "PUBLISHED", listOf(1))
 
         // Then
-        verify(bookRepository, times(1)).save(any<Book>())
         assertEquals("Effective Java", response.title)
         assertEquals(100, response.price)
         assertEquals("PUBLISHED", response.status)
+
+        val bookCaptor = argumentCaptor<Book>()
+        verify(bookRepository, times(1)).save(bookCaptor.capture())
+        assertEquals(null, bookCaptor.firstValue.id)
+        assertEquals(BookTitle("Effective Java"), bookCaptor.firstValue.title)
+        assertEquals(BookPrice(100), bookCaptor.firstValue.price)
+        assertEquals(BookStatus.PUBLISHED, bookCaptor.firstValue.status)
+        assertEquals(listOf(AuthorId(1)), bookCaptor.firstValue.authorIds)
     }
 
     @Test
@@ -76,6 +84,14 @@ class BookServiceTests {
         assertEquals("Effective Java", response!!.title)
         assertEquals(100, response.price)
         assertEquals("PUBLISHED", response.status)
+
+        val bookCaptor = argumentCaptor<Book>()
+        verify(bookRepository, times(1)).save(bookCaptor.capture())
+        assertEquals(BookId(1), bookCaptor.firstValue.id)
+        assertEquals(BookTitle("Effective Java"), bookCaptor.firstValue.title)
+        assertEquals(BookPrice(100), bookCaptor.firstValue.price)
+        assertEquals(BookStatus.PUBLISHED, bookCaptor.firstValue.status)
+        assertEquals(listOf(AuthorId(1)), bookCaptor.firstValue.authorIds)
     }
 
 
