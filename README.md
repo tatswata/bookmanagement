@@ -55,7 +55,7 @@ curl -X POST -H "Content-Type: application/json" \
 ### 書籍の情報を更新する
 ```
 curl -X PUT -H "Content-Type: application/json" \
-    -d '{"title": "Updated Book Title", "price": 4000, "status": "PUBLISHED", "authorIds": [2]}' \
+    -d '{"title": "Updated Book Title", "price": 4000, "status": "PUBLISHED", "authorIds": [1]}' \
     http://localhost:8080/books/2
 ```
 
