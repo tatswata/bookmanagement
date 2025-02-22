@@ -34,7 +34,7 @@ class BookRepositoryTests {
     }
 
     @Test
-    fun findById_見つかった著者を返す() {
+    fun findById_見つかった書籍を返す() {
         // Given
         val bookId = dsl.insertInto(Books.BOOKS, Books.BOOKS.TITLE, Books.BOOKS.PRICE, Books.BOOKS.STATUS)
             .values("Test Book", 1000, "PUBLISHED")
@@ -55,11 +55,15 @@ class BookRepositoryTests {
 
         // Then
         assertNotNull(book)
-        assertEquals("Test Book", book!!.title.value)
+        assertEquals(bookId, book!!.id!!.value)
+        assertEquals("Test Book", book.title.value)
+        assertEquals(1000, book.price.value)
+        assertEquals(BookStatus.PUBLISHED, book.status)
+        assertEquals(listOf(AuthorId(authorId)), book.authorIds)
     }
 
     @Test
-    fun findById_著者が見つからない場合はnullを返す() {
+    fun findById_書籍が見つからない場合はnullを返す() {
         // when
         val book = bookRepository.findById(999)
 
@@ -106,7 +110,7 @@ class BookRepositoryTests {
     }
 
     @Test
-    fun save_IDがnullなら新規作成() {
+    fun save_IDがnullなら書籍を新規作成() {
         // Given
         val authorId = dsl.insertInto(Authors.AUTHORS)
             .columns(Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)
@@ -139,7 +143,7 @@ class BookRepositoryTests {
     }
 
     @Test
-    fun save_IDが無いなら更新() {
+    fun save_IDがあるなら書籍を更新() {
         // Given
         val authorId1 = dsl.insertInto(Authors.AUTHORS)
             .columns(Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)
