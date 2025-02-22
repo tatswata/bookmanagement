@@ -32,7 +32,7 @@ class Book(
 
     fun updateAuthors(newAuthorIds: List<AuthorId>) {
         require(authorIds.isNotEmpty()) { "A book must have at least one author" }
-        this.authorIds = authorIds
+        this.authorIds = newAuthorIds
     }
 
     fun publish() {
