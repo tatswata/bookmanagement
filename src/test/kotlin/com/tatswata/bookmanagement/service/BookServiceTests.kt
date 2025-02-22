@@ -74,8 +74,8 @@ class BookServiceTests {
         // Then
         verify(bookRepository, times(1)).save(any<Book>())
         assertEquals("Effective Java", response!!.title)
-        assertEquals(100, response!!.price)
-        assertEquals("PUBLISHED", response!!.status)
+        assertEquals(100, response.price)
+        assertEquals("PUBLISHED", response.status)
     }
 
 
