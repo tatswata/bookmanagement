@@ -63,3 +63,8 @@ curl -X PUT -H "Content-Type: application/json" \
 ```
 curl http://localhost:8080/authors/1/books
 ```
+
+## ユニットテスト実行
+```
+./gradlew check
+```
