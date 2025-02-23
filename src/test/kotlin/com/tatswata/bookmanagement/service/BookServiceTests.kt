@@ -32,7 +32,7 @@ class BookServiceTests {
     private val bookService = BookService(authorRepository, bookRepository)
 
     @Test
-    fun 書籍を作成する_正常系() {
+    fun createBook_正常系() {
         // Given
         `when`(authorRepository.findById(1)).thenReturn(Author(AuthorId(1), AuthorName("John Doe"), AuthorBirthDate(LocalDate.parse("2000-01-01"))))
         `when`(bookRepository.save(any<Book>())).thenReturn(Book(BookId(1), BookTitle("Effective Java"), BookPrice(100), BookStatus.PUBLISHED, listOf(AuthorId(1))))
@@ -55,7 +55,7 @@ class BookServiceTests {
     }
 
     @Test
-    fun 書籍作成_存在しない著者に紐付けようとしたらIllegalArgumentExceptionを投げる() {
+    fun createBook_存在しない著者に紐付けようとしたらIllegalArgumentExceptionを投げる() {
         // Given
         `when`(authorRepository.findById(1)).thenReturn(null)
 
@@ -69,7 +69,7 @@ class BookServiceTests {
     }
 
     @Test
-    fun 書籍更新_正常系() {
+    fun updateBook_正常系() {
         // Given
         val book = Book(BookId(1), BookTitle("Old Title"), BookPrice(100), BookStatus.UNPUBLISHED, listOf(AuthorId(1)))
         `when`(bookRepository.findById(1)).thenReturn(book)
@@ -97,7 +97,7 @@ class BookServiceTests {
     }
 
     @Test
-    fun 書籍更新_変更後の値を渡さなかった属性はそのままになる() {
+    fun updateBook_変更後の値を渡さなかった属性はそのままになる() {
         // Given
         val oldBook = Book(BookId(1), BookTitle("Old Title"), BookPrice(100), BookStatus.UNPUBLISHED, listOf(AuthorId(1)))
         `when`(bookRepository.findById(1)).thenReturn(oldBook)
@@ -124,7 +124,7 @@ class BookServiceTests {
     }
 
     @Test
-    fun 書籍更新_存在しないidを指定したらIllegalArgumentExceptionを投げる() {
+    fun updateBook_存在しないidを指定したらIllegalArgumentExceptionを投げる() {
         // Given
         `when`(bookRepository.findById(1)).thenReturn(null)
 
@@ -138,7 +138,7 @@ class BookServiceTests {
     }
 
     @Test
-    fun 書籍更新_存在しない著者に紐付けようとしたらIllegalArgumentExceptionを投げる() {
+    fun updateBook_存在しない著者に紐付けようとしたらIllegalArgumentExceptionを投げる() {
         // Given
         val book = Book(BookId(1), BookTitle("Old Title"), BookPrice(100), BookStatus.UNPUBLISHED, listOf(AuthorId(1)))
         `when`(bookRepository.findById(1)).thenReturn(book)

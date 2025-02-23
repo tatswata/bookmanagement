@@ -31,7 +31,7 @@ class AuthorServiceTests {
     private val authorService = AuthorService(authorRepository, bookRepository)
 
     @Test
-    fun 著者作成_正常系() {
+    fun createAuthor_正常系() {
         // Given
         val author = Author(AuthorId(1), AuthorName("John Doe"), AuthorBirthDate(LocalDate.parse("2000-01-01")))
         `when`(authorRepository.save(any<Author>())).thenReturn(author)
@@ -52,7 +52,7 @@ class AuthorServiceTests {
     }
 
     @Test
-    fun 著者更新_正常系() {
+    fun updateAuthor_正常系() {
         // Given
         val author = Author(AuthorId(1), AuthorName("John Doe"), AuthorBirthDate(LocalDate.parse("2000-01-01")))
         `when`(authorRepository.findById(1)).thenReturn(author)
@@ -74,7 +74,7 @@ class AuthorServiceTests {
     }
 
     @Test
-    fun 著者更新_変更後の値を渡さなかった属性はそのままになる() {
+    fun updateAuthor_変更後の値を渡さなかった属性はそのままになる() {
         // Given
         val author = Author(AuthorId(1), AuthorName("John Doe"), AuthorBirthDate(LocalDate.parse("2000-01-01")))
         `when`(authorRepository.findById(1)).thenReturn(author)
@@ -96,7 +96,7 @@ class AuthorServiceTests {
     }
 
     @Test
-    fun 著者更新_存在しないidを指定した場合はIllegalArgumentExceptionを投げる() {
+    fun updateAuthor_存在しないidを指定した場合はIllegalArgumentExceptionを投げる() {
         // Given
         `when`(authorRepository.findById(1)).thenReturn(null)
 
@@ -110,7 +110,7 @@ class AuthorServiceTests {
     }
 
     @Test
-    fun 著者に紐づく書籍取得() {
+    fun getBooksWrittenByAuthor_正常系() {
         // Given
         val books = listOf(
             Book(BookId(1), BookTitle("Effective Java"), BookPrice(100), BookStatus.PUBLISHED, listOf(AuthorId(1))),
