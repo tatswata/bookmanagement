@@ -116,7 +116,7 @@ class BookRepositoryTests {
     }
 
     @Test
-    fun save_IDがnullなら書籍を新規作成() {
+    fun save_渡されたオブジェクトのIDがnullなら書籍を新規作成() {
         // Given
         val authorId = dsl.insertInto(Authors.AUTHORS)
             .columns(Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)
@@ -149,7 +149,7 @@ class BookRepositoryTests {
     }
 
     @Test
-    fun save_IDがあるなら書籍を更新() {
+    fun save_渡されたオブジェクトにIDがあるなら書籍を更新() {
         // Given
         val authorId1 = dsl.insertInto(Authors.AUTHORS)
             .columns(Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)

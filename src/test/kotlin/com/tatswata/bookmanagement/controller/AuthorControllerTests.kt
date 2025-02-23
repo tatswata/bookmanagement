@@ -27,7 +27,7 @@ class AuthorControllerTests {
     private val authorController = AuthorController(authorService)
 
     @Test
-    fun 著者作成_正常系() {
+    fun 著者作成エンドポイント_正常系() {
         // Given
         val createAuthorRequest = CreateAuthorRequest("John Doe", "2000-01-01")
         val createAuthor = Author(AuthorId(1), AuthorName("John Doe"), AuthorBirthDate(LocalDate.parse("2000-01-01")))
@@ -43,7 +43,7 @@ class AuthorControllerTests {
     }
 
     @Test
-    fun 著者作成_生年月日のフォーマットが不正な場合IllegalArgumentExceptionを投げる() {
+    fun 著者作成エンドポイント_生年月日のフォーマットが不正な場合IllegalArgumentExceptionを投げる() {
         // Given
         val createAuthorRequest = CreateAuthorRequest("John Doe", "invalid-date")
 
@@ -57,7 +57,7 @@ class AuthorControllerTests {
     }
 
     @Test
-    fun 著者更新_正常系() {
+    fun 著者更新エンドポイント_正常系() {
         // Given
         val updateAuthorRequest = UpdateAuthorRequest("John Doe Jr", "2000-01-01")
         val updatedAuthor = Author(AuthorId(1), AuthorName("John Doe Jr"), AuthorBirthDate(LocalDate.parse("2000-01-01")))
@@ -73,7 +73,23 @@ class AuthorControllerTests {
     }
 
     @Test
-    fun 著者更新_更新対象が存在しない場合NOT_FOUNDを返す() {
+    fun 著者更新エンドポイント_正常系_任意パラメータ無し() {
+        // Given
+        val updateAuthorRequest = UpdateAuthorRequest(null, null)
+        val updatedAuthor = Author(AuthorId(1), AuthorName("John Doe Jr"), AuthorBirthDate(LocalDate.parse("2000-01-01")))
+        val authorResponse = AuthorResponse(updatedAuthor)
+        `when`(authorService.updateAuthor(1, null, null)).thenReturn(authorResponse)
+
+        // When
+        val response = authorController.updateAuthor(1, updateAuthorRequest)
+
+        // Then
+        assertEquals(HttpStatus.OK, response.statusCode)
+        assertEquals(authorResponse, response.body)
+    }
+
+    @Test
+    fun 著者更新エンドポイント_更新対象が存在しない場合NOT_FOUNDを返す() {
         // Given
         val updateAuthorRequest = UpdateAuthorRequest("John Doe Jr", "2000-01-01")
         `when`(authorService.updateAuthor(1, "John Doe Jr", LocalDate.parse("2000-01-01"))).thenReturn(null)
@@ -87,7 +103,7 @@ class AuthorControllerTests {
     }
 
     @Test
-    fun 著者更新_生年月日のフォーマットが不正な場合IllegalArgumentExceptionを投げる() {
+    fun 著者更新エンドポイント_生年月日のフォーマットが不正な場合IllegalArgumentExceptionを投げる() {
         // Given
         val updateAuthorRequest = UpdateAuthorRequest("John Doe Jr", "invalid-date")
 
@@ -101,7 +117,7 @@ class AuthorControllerTests {
     }
 
     @Test
-    fun 著者に紐づく書籍一覧取得_正常系() {
+    fun 著者に紐づく書籍一覧取得エンドポイント_正常系() {
         // Given
         val book1 = Book(BookId(1), BookTitle("Clean Architecture"), BookPrice(100), BookStatus.valueOf("PUBLISHED"), listOf(AuthorId(1), AuthorId(2)))
         val book2 = Book(BookId(1), BookTitle("Clean Coder"), BookPrice(200), BookStatus.valueOf("PUBLISHED"), listOf(AuthorId(2)))

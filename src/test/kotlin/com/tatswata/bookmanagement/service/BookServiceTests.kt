@@ -32,7 +32,7 @@ class BookServiceTests {
     private val bookService = BookService(authorRepository, bookRepository)
 
     @Test
-    fun 書籍を作成する_正常系() {
+    fun createBook_正常系() {
         // Given
         `when`(authorRepository.findById(1)).thenReturn(Author(AuthorId(1), AuthorName("John Doe"), AuthorBirthDate(LocalDate.parse("2000-01-01"))))
         `when`(bookRepository.save(any<Book>())).thenReturn(Book(BookId(1), BookTitle("Effective Java"), BookPrice(100), BookStatus.PUBLISHED, listOf(AuthorId(1))))
@@ -55,7 +55,7 @@ class BookServiceTests {
     }
 
     @Test
-    fun 書籍作成_存在しない著者に紐付けようとしたらIllegalArgumentExceptionを投げる() {
+    fun createBook_存在しない著者に紐付けようとしたらIllegalArgumentExceptionを投げる() {
         // Given
         `when`(authorRepository.findById(1)).thenReturn(null)
 
@@ -69,12 +69,14 @@ class BookServiceTests {
     }
 
     @Test
-    fun 書籍更新_正常系() {
+    fun updateBook_正常系() {
         // Given
         val book = Book(BookId(1), BookTitle("Old Title"), BookPrice(100), BookStatus.UNPUBLISHED, listOf(AuthorId(1)))
         `when`(bookRepository.findById(1)).thenReturn(book)
-        `when`(authorRepository.findById(1)).thenReturn(Author(AuthorId(1), AuthorName("John Doe"), AuthorBirthDate(LocalDate.parse("2000-01-01"))))
-        `when`(bookRepository.save(any<Book>())).thenReturn(Book(BookId(1), BookTitle("Effective Java"), BookPrice(100), BookStatus.PUBLISHED, listOf(AuthorId(1))))
+        val author = Author(AuthorId(1), AuthorName("John Doe"), AuthorBirthDate(LocalDate.parse("2000-01-01")))
+        `when`(authorRepository.findById(1)).thenReturn(author)
+        val savedBook = Book(BookId(1), BookTitle("Effective Java"), BookPrice(100), BookStatus.PUBLISHED, listOf(AuthorId(1)))
+        `when`(bookRepository.save(any<Book>())).thenReturn(savedBook)
 
         // When
         val response = bookService.updateBook(1, "Effective Java", 100, "PUBLISHED", listOf(1))
@@ -94,9 +96,35 @@ class BookServiceTests {
         assertEquals(listOf(AuthorId(1)), bookCaptor.firstValue.authorIds)
     }
 
+    @Test
+    fun updateBook_変更後の値を渡さなかった属性はそのままになる() {
+        // Given
+        val oldBook = Book(BookId(1), BookTitle("Old Title"), BookPrice(100), BookStatus.UNPUBLISHED, listOf(AuthorId(1)))
+        `when`(bookRepository.findById(1)).thenReturn(oldBook)
+        val author = Author(AuthorId(1), AuthorName("John Doe"), AuthorBirthDate(LocalDate.parse("2000-01-01")))
+        `when`(authorRepository.findById(1)).thenReturn(author)
+        `when`(bookRepository.save(any<Book>())).thenReturn(oldBook)
+
+        // When
+        val response = bookService.updateBook(1, null, null, null, null)
+
+        // Then
+        verify(bookRepository, times(1)).save(any<Book>())
+        assertEquals("Old Title", response!!.title)
+        assertEquals(100, response.price)
+        assertEquals("UNPUBLISHED", response.status)
+
+        val bookCaptor = argumentCaptor<Book>()
+        verify(bookRepository, times(1)).save(bookCaptor.capture())
+        assertEquals(BookId(1), bookCaptor.firstValue.id)
+        assertEquals(BookTitle("Old Title"), bookCaptor.firstValue.title)
+        assertEquals(BookPrice(100), bookCaptor.firstValue.price)
+        assertEquals(BookStatus.UNPUBLISHED, bookCaptor.firstValue.status)
+        assertEquals(listOf(AuthorId(1)), bookCaptor.firstValue.authorIds)
+    }
 
     @Test
-    fun 書籍更新_存在しないidを指定したらIllegalArgumentExceptionを投げる() {
+    fun updateBook_存在しないidを指定したらIllegalArgumentExceptionを投げる() {
         // Given
         `when`(bookRepository.findById(1)).thenReturn(null)
 
@@ -110,7 +138,7 @@ class BookServiceTests {
     }
 
     @Test
-    fun 書籍更新_存在しない著者に紐付けようとしたらIllegalArgumentExceptionを投げる() {
+    fun updateBook_存在しない著者に紐付けようとしたらIllegalArgumentExceptionを投げる() {
         // Given
         val book = Book(BookId(1), BookTitle("Old Title"), BookPrice(100), BookStatus.UNPUBLISHED, listOf(AuthorId(1)))
         `when`(bookRepository.findById(1)).thenReturn(book)

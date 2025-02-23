@@ -62,7 +62,7 @@ class AuthorRepositoryTests {
     }
 
     @Test
-    fun save_IDがnullなら著者を新規作成() {
+    fun save_渡されたオブジェクトのIDがnullなら著者を新規作成() {
         // Given
         val author = Author(null, AuthorName("New Author"), AuthorBirthDate(LocalDate.parse("1990-01-01")))
 
@@ -82,7 +82,7 @@ class AuthorRepositoryTests {
     }
 
     @Test
-    fun save_IDがあるなら著者を更新() {
+    fun save_渡されたオブジェクトにIDがあるなら著者を更新() {
         // Given
         val authorId = dsl.insertInto(Authors.AUTHORS, Authors.AUTHORS.NAME, Authors.AUTHORS.BIRTH_DATE)
             .values("Old Author", LocalDate.parse("1980-01-01"))

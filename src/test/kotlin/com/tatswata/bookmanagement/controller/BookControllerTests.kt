@@ -21,7 +21,7 @@ class BookControllerTests {
     private val bookController = BookController(bookService)
 
     @Test
-    fun 書籍作成_正常系() {
+    fun 書籍作成エンドポイント_正常系() {
         // Given
         val createBookRequest = CreateBookRequest("Effective Java", 100, "UNPUBLISHED", listOf(1, 2))
         val createdBook = Book(BookId(1), BookTitle("Effective Java"), BookPrice(100), BookStatus.valueOf("UNPUBLISHED"), listOf(
@@ -38,7 +38,7 @@ class BookControllerTests {
     }
 
     @Test
-    fun 書籍更新_正常系() {
+    fun 書籍更新エンドポイント_正常系() {
         // Given
         val updateBookRequest = UpdateBookRequest("Clean Code", 150, "PUBLISHED", listOf(3, 4))
         val updatedBook = Book(BookId(1), BookTitle("Clean Code"), BookPrice(100), BookStatus.valueOf("PUBLISHED"), listOf(
@@ -55,7 +55,24 @@ class BookControllerTests {
     }
 
     @Test
-    fun 書籍更新_更新対象が存在しない場合NOT_FOUNDを返す() {
+    fun 書籍更新エンドポイント_正常系_任意パラメータ無し() {
+        // Given
+        val updateBookRequest = UpdateBookRequest(null, null, null, null)
+        val updatedBook = Book(BookId(1), BookTitle("Clean Code"), BookPrice(100), BookStatus.valueOf("PUBLISHED"), listOf(
+            AuthorId(1), AuthorId(2)))
+        val bookResponse = BookResponse(updatedBook)
+        `when`(bookService.updateBook(1, null, null, null, null)).thenReturn(bookResponse)
+
+        // When
+        val response = bookController.updateBook(1, updateBookRequest)
+
+        // Then
+        assertEquals(HttpStatus.OK, response.statusCode)
+        assertEquals(bookResponse, response.body)
+    }
+
+    @Test
+    fun 書籍更新エンドポイント_更新対象が存在しない場合NOT_FOUNDを返す() {
         // Given
         val updateBookRequest = UpdateBookRequest("Clean Code", 150, "PUBLISHED", listOf(3, 4))
         `when`(bookService.updateBook(1, "Clean Code", 150, "PUBLISHED", listOf(3, 4))).thenReturn(null)
