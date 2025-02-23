@@ -41,14 +41,14 @@ curl -X POST -H "Content-Type: application/json" \
 ### 著者の情報を更新する
 ```
 curl -X PUT -H "Content-Type: application/json" \
-    -d '{"name": "Updated Author", "birthDate": "1985-06-15"}' \
+    -d '{"name": "Updated Author Name", "birthDate": "1985-06-15"}' \
     http://localhost:8080/authors/1
 ```
 
 ### 書籍を登録する
 ```
 curl -X POST -H "Content-Type: application/json" \
-    -d '{"title": "The Great Book", "price": 3000, "status": "PUBLISHED", "authorIds": [1, 2]}' \
+    -d '{"title": "Book Title", "price": 3000, "status": "UNPUBLISHED", "authorIds": [1, 2]}' \
     http://localhost:8080/books
 ```
 
@@ -56,7 +56,7 @@ curl -X POST -H "Content-Type: application/json" \
 ```
 curl -X PUT -H "Content-Type: application/json" \
     -d '{"title": "Updated Book Title", "price": 4000, "status": "PUBLISHED", "authorIds": [1]}' \
-    http://localhost:8080/books/2
+    http://localhost:8080/books/1
 ```
 
 ### 著者に紐づく書籍を取得する
